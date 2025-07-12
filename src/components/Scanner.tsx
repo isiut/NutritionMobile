@@ -1,6 +1,6 @@
 import {CameraView, CameraType, useCameraPermissions, BarcodeType} from 'expo-camera';
 import {useState} from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 
 export const VALID_BARCODE_TYPES: BarcodeType[] = [
     'ean13',
@@ -22,30 +22,19 @@ export function Scanner() {
         // Camera permissions are not granted yet.
         return (
             <View style={styles.container}>
-                <Text style={styles.message}>We need your permission to show the camera</Text>
+                <Text style={styles.message}>You must grant the app camera permission to scan items</Text>
                 <Button onPress={requestPermission} title="grant permission"/>
             </View>
         );
     }
 
-    function toggleCameraFacing() {
-        setFacing(current => (current === 'back' ? 'front' : 'back'));
-    }
-
     return (
-        <View style={styles.container}>
-            <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{
-                barcodeTypes: VALID_BARCODE_TYPES,
-            }} onBarcodeScanned={(scanned) => {
-                console.log("Scanned", scanned)
-            }}>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-                        <Text style={styles.text}>Flip Camera</Text>
-                    </TouchableOpacity>
-                </View>
-            </CameraView>
-        </View>
+        <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{
+            barcodeTypes: VALID_BARCODE_TYPES,
+        }} onBarcodeScanned={(scanned) => {
+            console.log("Scanned", scanned)
+        }}>
+        </CameraView>
     );
 }
 
@@ -55,8 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     message: {
-        textAlign: 'center',
-        paddingBottom: 10,
+        fontSize: 18,
     },
     camera: {
         flex: 1,
@@ -78,3 +66,5 @@ const styles = StyleSheet.create({
         color: 'white',
     },
 });
+
+export default Scanner;
