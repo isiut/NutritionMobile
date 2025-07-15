@@ -6,26 +6,12 @@ import NavigationBar from "../navigation/NavigationBar";
 // Get screen dimensions for responsive design
 const {width, height} = Dimensions.get('window');
 
-const ScanScreen = ({navigation}: { navigation: any }) => {
+const YouScreen = ({navigation}: { navigation: any }) => {
     return (
         <View style={styles.container}>
-            <Scanner/>
-
             {/* Bottom Bar Container */}
             <View style={styles.bottomBarContainer}>
-                {/* Search Input Section */}
-                <View style={styles.searchInputWrapper}>
-                    <TextInput
-                        style={styles.searchInput}
-                        placeholder="Search for food or enter barcode"
-                        placeholderTextColor="#888"
-                    />
-                    <TouchableOpacity style={styles.clearButton}>
-                        {/* Using a simple 'X' for the clear icon */}
-                        <Text style={styles.clearButtonText}>✕</Text>
-                    </TouchableOpacity>
-                </View>
-                <NavigationBar currentScreen="Scan" navigation={navigation}/>
+                <NavigationBar currentScreen="You" navigation={navigation}/>
             </View>
         </View>
     );
@@ -81,4 +67,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScanScreen;
+export default YouScreen;

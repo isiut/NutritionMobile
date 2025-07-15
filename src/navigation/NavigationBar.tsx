@@ -1,21 +1,24 @@
 import {TouchableOpacity, View, StyleSheet, Text} from "react-native";
 
-export function NavigationBar({currentScreen}: { currentScreen: any }) {
+export function NavigationBar({currentScreen, navigation}: { currentScreen: any, navigation: any }) {
     return (
         <View style={styles.navigationIcons}>
-            <TouchableOpacity style={[styles.navItem, currentScreen == "Today" ? styles.navItemActive : null]}>
+            <TouchableOpacity style={[styles.navItem, currentScreen == "Today" ? styles.navItemActive : null]}
+                              onPress={() => navigation.navigate("Today")}>
                 <Text style={styles.navIcon}>☀️</Text>
-                <Text style={styles.navText}>Today</Text>
+                <Text style={currentScreen == "Today" ? styles.navTextActive : null}>Today</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.navItem, currentScreen == "Scan" ? styles.navItemActive : null]}>
-                <Text style={[styles.navIcon, styles.navIconActive]}>📷</Text>
-                <Text style={[styles.navText, styles.navTextActive]}>Scan</Text>
+            <TouchableOpacity style={[styles.navItem, currentScreen == "Scan" ? styles.navItemActive : null]}
+                              onPress={() => navigation.navigate("Scan")}>
+                <Text style={styles.navIcon}>📷</Text>
+                <Text style={currentScreen == "Scan" ? styles.navTextActive : null}>Scan</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.navItem, currentScreen == "You" ? styles.navItemActive : null]}>
+            <TouchableOpacity style={[styles.navItem, currentScreen == "You" ? styles.navItemActive : null]}
+                              onPress={() => navigation.navigate("You")}>
                 <Text style={styles.navIcon}>👤</Text>
-                <Text style={styles.navText}>You</Text>
+                <Text style={currentScreen == "You" ? styles.navTextActive : null}>You</Text>
             </TouchableOpacity>
         </View>
     )
