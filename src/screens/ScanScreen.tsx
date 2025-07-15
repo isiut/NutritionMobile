@@ -1,19 +1,13 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Scanner from '../components/Scanner';
-import {NavigationContainer} from "@react-navigation/native";
 import NavigationBar from "../navigation/NavigationBar";
-// Get screen dimensions for responsive design
-const {width, height} = Dimensions.get('window');
 
 const ScanScreen = ({navigation}: { navigation: any }) => {
     return (
         <View style={styles.container}>
             <Scanner/>
-
-            {/* Bottom Bar Container */}
             <View style={styles.bottomBarContainer}>
-                {/* Search Input Section */}
                 <View style={styles.searchInputWrapper}>
                     <TextInput
                         style={styles.searchInput}
@@ -21,7 +15,6 @@ const ScanScreen = ({navigation}: { navigation: any }) => {
                         placeholderTextColor="#888"
                     />
                     <TouchableOpacity style={styles.clearButton}>
-                        {/* Using a simple 'X' for the clear icon */}
                         <Text style={styles.clearButtonText}>✕</Text>
                     </TouchableOpacity>
                 </View>

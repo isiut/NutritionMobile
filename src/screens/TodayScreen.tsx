@@ -1,15 +1,10 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import Scanner from '../components/Scanner';
-import {NavigationContainer} from "@react-navigation/native";
+import {View, StyleSheet} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
-// Get screen dimensions for responsive design
-const {width, height} = Dimensions.get('window');
 
 const TodayScreen = ({navigation}: { navigation: any }) => {
     return (
         <View style={styles.container}>
-            {/* Bottom Bar Container */}
             <View style={styles.bottomBarContainer}>
                 <NavigationBar currentScreen="Today" navigation={navigation}/>
             </View>

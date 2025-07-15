@@ -1,15 +1,10 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import Scanner from '../components/Scanner';
-import {NavigationContainer} from "@react-navigation/native";
+import {View, StyleSheet} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
-// Get screen dimensions for responsive design
-const {width, height} = Dimensions.get('window');
 
 const YouScreen = ({navigation}: { navigation: any }) => {
     return (
         <View style={styles.container}>
-            {/* Bottom Bar Container */}
             <View style={styles.bottomBarContainer}>
                 <NavigationBar currentScreen="You" navigation={navigation}/>
             </View>
@@ -20,7 +15,7 @@ const YouScreen = ({navigation}: { navigation: any }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5F5F5', // Light background for the whole screen
+        backgroundColor: '#F5F5F5',
     },
     cameraViewText: {
         fontSize: 32,

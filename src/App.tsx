@@ -1,9 +1,8 @@
-import {Scanner} from "./components/Scanner";
-import ScanScreen from "./screens/ScanScreen";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import YouScreen from "./screens/YouScreen";
 import TodayScreen from "./screens/TodayScreen";
+import ScanScreen from "./screens/ScanScreen";
+import YouScreen from "./screens/YouScreen";
 
 
 const Stack = createNativeStackNavigator();
