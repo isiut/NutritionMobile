@@ -1,10 +1,41 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
 
 const YouScreen = ({navigation}: { navigation: any }) => {
     return (
         <View style={styles.container}>
+            <View style={styles.card}>
+                <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{"Illia Siutkin"}</Text>
+                    <Text style={styles.userEmail}>{"illiasiutkin07@gmail.com"}</Text>
+                </View>
+                <View style={styles.preferencesBox}>
+                    <Text>Preferences: Vegetarian, Kosher</Text>
+                    <Text>Allergies: Soy, Eggs, Fish</Text>
+                </View>
+                <View style={styles.optionsContainer}>
+                    <TouchableOpacity style={styles.optionItem}
+                                      onPress={() => console.log('Account Settings pressed')}>
+                        <View style={styles.optionContent}>
+                            <Text style={styles.optionText}>Account Settings</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionItem} onPress={() => console.log('Privacy pressed')}>
+                        <View style={styles.optionContent}>
+                            <Text style={styles.optionText}>Privacy</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionItem} onPress={() => console.log('Support pressed')}>
+                        <View style={styles.optionContent}>
+                            <Text style={styles.optionText}>Support</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => console.log('Logout pressed')}>
+                        <Text style={styles.logoutButtonText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
             <View style={styles.bottomBarContainer}>
                 <NavigationBar currentScreen="You" navigation={navigation}/>
             </View>
@@ -15,50 +46,110 @@ const YouScreen = ({navigation}: { navigation: any }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#FFFFFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0,
     },
-    cameraViewText: {
-        fontSize: 32,
-        fontWeight: 'bold',
+    card: {
+        backgroundColor: '#ffffff',
+        borderRadius: 0,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 8,
+        width: '100%',
+        height: '100%',
+        maxWidth: 448,
+        padding: 24,
+    },
+    preferencesBox: {
+        borderWidth: 2,
+        borderColor: 'green',
+        borderRadius: 8,
+        padding: 8,
+        marginBottom: 16
+    },
+    header: {
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    userInfo: {
+        alignItems: 'center',
+        marginBottom: 32,
+    },
+    userName: {
+        marginTop: 16,
+        fontSize: 30,
+        fontWeight: '900',
+        color: '#111827',
+    },
+    userEmail: {
+        color: '#4B5563',
+    },
+    optionsContainer: {
+        gap: 16,
+    },
+    optionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 16,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.05,
+        shadowRadius: 2,
+        elevation: 2,
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+    },
+    optionContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    optionText: {
+        color: '#1F2937',
+        fontSize: 18,
+        marginLeft: 12,
+    },
+    logoutButton: {
+        width: '100%',
+        backgroundColor: '#EF4444',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 16,
+    },
+    logoutButtonText: {
         color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     bottomBarContainer: {
         position: 'absolute',
         bottom: 0,
         width: '100%',
         backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 30, // Rounded top corners
+        borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingHorizontal: 20,
         paddingTop: 20,
-        paddingBottom: 30, // Extra padding at the bottom for safe area
+        paddingBottom: 30,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: -5},
         shadowOpacity: 0.1,
         shadowRadius: 10,
-        elevation: 10, // For Android shadow
-    },
-    searchInputWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F0F0F0',
-        borderRadius: 25,
-        paddingHorizontal: 15,
-        marginBottom: 20,
-        height: 50,
-    },
-    searchInput: {
-        flex: 1,
-        fontSize: 16,
-        color: '#333',
-    },
-    clearButton: {
-        padding: 5,
-    },
-    clearButtonText: {
-        fontSize: 18,
-        color: '#888',
-        fontWeight: 'bold',
+        elevation: 10,
     },
 });
 
