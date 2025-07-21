@@ -29,11 +29,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5F5F5', // Light background for the whole screen
     },
-    cameraViewText: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-    },
     bottomBarContainer: {
         position: 'absolute',
         bottom: 0,

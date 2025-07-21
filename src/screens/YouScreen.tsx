@@ -1,79 +1,86 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
+import ScrollView = Animated.ScrollView;
 
 const YouScreen = ({navigation}: { navigation: any }) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.card}>
-                <View style={styles.userInfo}>
-                    <Text style={styles.userName}>{"Illia Siutkin"}</Text>
-                    <Text style={styles.userEmail}>{"illiasiutkin07@gmail.com"}</Text>
+        <>
+            <ScrollView style={styles.container}>
+                <View style={styles.card}>
+                    <View style={styles.userInfo}>
+                        <Text style={styles.userName}>{"Illia Siutkin"}</Text>
+                        <Text style={styles.userEmail}>{"illiasiutkin07@gmail.com"}</Text>
+                    </View>
+                    <View style={styles.preferencesBox}>
+                        <Text>Preferences: Vegetarian, Kosher</Text>
+                        <Text>Allergies: Soy, Eggs, Fish</Text>
+                    </View>
                 </View>
-                <View style={styles.preferencesBox}>
-                    <Text>Preferences: Vegetarian, Kosher</Text>
-                    <Text>Allergies: Soy, Eggs, Fish</Text>
+                <View style={styles.card}>
+                    <View style={styles.optionsContainer}>
+                        <TouchableOpacity style={styles.optionItem}
+                                          onPress={() => console.log('Account Settings pressed')}>
+                            <View style={styles.optionContent}>
+                                <Text style={styles.optionText}>Account Settings</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionItem} onPress={() => console.log('App Settings pressed')}>
+                            <View style={styles.optionContent}>
+                                <Text style={styles.optionText}>App Settings</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionItem} onPress={() => console.log('Privacy pressed')}>
+                            <View style={styles.optionContent}>
+                                <Text style={styles.optionText}>Privacy</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionItem} onPress={() => console.log('Support pressed')}>
+                            <View style={styles.optionContent}>
+                                <Text style={styles.optionText}>Support</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.logoutButton} onPress={() => console.log('Logout pressed')}>
+                            <Text style={styles.logoutButtonText}>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.optionsContainer}>
-                    <TouchableOpacity style={styles.optionItem}
-                                      onPress={() => console.log('Account Settings pressed')}>
-                        <View style={styles.optionContent}>
-                            <Text style={styles.optionText}>Account Settings</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionItem} onPress={() => console.log('Privacy pressed')}>
-                        <View style={styles.optionContent}>
-                            <Text style={styles.optionText}>Privacy</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionItem} onPress={() => console.log('Support pressed')}>
-                        <View style={styles.optionContent}>
-                            <Text style={styles.optionText}>Support</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.logoutButton} onPress={() => console.log('Logout pressed')}>
-                        <Text style={styles.logoutButtonText}>Logout</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            </ScrollView>
             <View style={styles.bottomBarContainer}>
                 <NavigationBar currentScreen="You" navigation={navigation}/>
             </View>
-        </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 40,
         flex: 1,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0,
+        backgroundColor: '#F5F5F5',
+        paddingHorizontal: 16,
+        paddingTop: 32,
     },
     card: {
-        backgroundColor: '#ffffff',
-        borderRadius: 0,
+        width: '95%',
+        maxWidth: 420,
+        alignSelf: 'center',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 20,
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 4},
-        shadowOpacity: 0.1,
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.08,
         shadowRadius: 6,
-        elevation: 8,
-        width: '100%',
-        height: '100%',
-        maxWidth: 448,
-        padding: 24,
+        elevation: 4,
     },
     preferencesBox: {
         borderWidth: 2,
         borderColor: 'green',
         borderRadius: 8,
         padding: 8,
-        marginBottom: 16
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: 24,
     },
     userInfo: {
         alignItems: 'center',
@@ -89,7 +96,7 @@ const styles = StyleSheet.create({
         color: '#4B5563',
     },
     optionsContainer: {
-        gap: 16,
+        gap: 15,
     },
     optionItem: {
         flexDirection: 'row',

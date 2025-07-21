@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import {View, StyleSheet, Text, Animated} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
 import ScrollView = Animated.ScrollView;
 
 const TodayScreen = ({navigation}: { navigation: any }) => {
-    const [foods, setFoods] = useState([
+    const [foods, _setFoods] = useState([
         {id: 1, name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fat: 3},
         {id: 2, name: 'Banana', calories: 105, protein: 1, carbs: 27, fat: 0},
         {id: 3, name: 'Chicken Breast (cooked)', calories: 165, protein: 31, carbs: 0, fat: 4},
@@ -64,31 +64,11 @@ const TodayScreen = ({navigation}: { navigation: any }) => {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 40,
         flex: 1,
         backgroundColor: '#F5F5F5',
         paddingHorizontal: 16,
         paddingTop: 32,
-    },
-    header: {
-        width: '100%',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 16,
-        padding: 28,
-        marginBottom: 28,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.08,
-        shadowRadius: 6,
-        elevation: 4,
-    },
-    headerTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    headerSubtitle: {
-        fontSize: 16,
     },
     card: {
         width: '95%',

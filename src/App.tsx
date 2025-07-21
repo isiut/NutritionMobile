@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{animation: "none", headerShown: false}}>
                 <Stack.Screen name={"Today"} component={TodayScreen}/>
                 <Stack.Screen name={"Scan"} component={ScanScreen}/>
                 <Stack.Screen name={"You"} component={YouScreen}/>
