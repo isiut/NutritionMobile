@@ -9,7 +9,7 @@ export const VALID_BARCODE_TYPES: BarcodeType[] = [
     'upc_a',
 ];
 
-export function Scanner() {
+export function Scanner({navigation}: { navigation: any }) {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
 
@@ -33,6 +33,7 @@ export function Scanner() {
             barcodeTypes: VALID_BARCODE_TYPES,
         }} onBarcodeScanned={(scanned) => {
             console.log("Scanned", scanned)
+            navigation.navigate("ScannedFood", {})
         }}>
         </CameraView>
     );

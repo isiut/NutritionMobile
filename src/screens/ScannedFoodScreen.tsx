@@ -3,22 +3,12 @@ import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native'
 import Scanner from '../components/Scanner';
 import NavigationBar from "../navigation/NavigationBar";
 
-const ScanScreen = ({navigation}: { navigation: any }) => {
+const ScannedFoodScreen = ({navigation}: { navigation: any }) => {
     return (
         <View style={styles.container}>
-            <Scanner navigation={navigation}/>
+
             <View style={styles.bottomBarContainer}>
-                <View style={styles.searchInputWrapper}>
-                    <TextInput
-                        style={styles.searchInput}
-                        placeholder="Search for food or enter barcode"
-                        placeholderTextColor="#888"
-                    />
-                    <TouchableOpacity style={styles.clearButton}>
-                        <Text style={styles.clearButtonText}>✕</Text>
-                    </TouchableOpacity>
-                </View>
-                <NavigationBar currentScreen="Scan" navigation={navigation}/>
+                <NavigationBar currentScreen="ScannedFood" navigation={navigation}/>
             </View>
         </View>
     );
@@ -69,4 +59,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScanScreen;
+export default ScannedFoodScreen;
