@@ -1,37 +1,104 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, Animated} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, Text, Animated, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
+import { useAuth } from '../contexts/AuthContext';
+import apiService, { DailyInfo, FoodEntry } from '../services/apiService';
 import ScrollView = Animated.ScrollView;
 
 const TodayScreen = ({navigation}: { navigation: any }) => {
-    const [foods, _setFoods] = useState([
-        {id: 1, name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fat: 3},
-        {id: 2, name: 'Banana', calories: 105, protein: 1, carbs: 27, fat: 0},
-        {id: 3, name: 'Chicken Breast (cooked)', calories: 165, protein: 31, carbs: 0, fat: 4},
-        {id: 4, name: 'Broccoli', calories: 55, protein: 4, carbs: 11, fat: 1},
-        {id: 5, name: 'Rice (cooked)', calories: 205, protein: 4, carbs: 45, fat: 0},
-    ]);
+    const { user } = useAuth();
+    const [dailyInfo, setDailyInfo] = useState<DailyInfo | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchDailyInfo();
+    }, []);
+
+    const fetchDailyInfo = async () => {
+        if (!user?.id) return;
+        
+        try {
+            setLoading(true);
+            const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+            const data = await apiService.getDailyInfo(user.id, today);
+            setDailyInfo(data);
+        } catch (error) {
+            console.error('Failed to fetch daily info:', error);
+            Alert.alert('Error', 'Failed to load daily nutrition data');
+            // Fallback to mock data if API fails
+            setDailyInfo({
+                totalCalories: 0,
+                totalProtein: 0,
+                totalCarbs: 0,
+                totalFat: 0,
+                entries: []
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRemoveFoodEntry = async (entryId: string) => {
+        if (!user?.id) return;
+
+        Alert.alert(
+            'Remove Food Entry',
+            'Are you sure you want to remove this food entry?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Remove',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            await apiService.removeFoodEntry(user.id, entryId);
+                            // Refresh the daily info after removal
+                            await fetchDailyInfo();
+                        } catch (error) {
+                            console.error('Failed to remove food entry:', error);
+                            Alert.alert('Error', 'Failed to remove food entry');
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
+    if (loading) {
+        return (
+            <View style={[styles.container, styles.loadingContainer]}>
+                <ActivityIndicator size="large" color="#50ae2b" />
+                <Text style={styles.loadingText}>Loading your nutrition data...</Text>
+            </View>
+        );
+    }
 
     return (
         <>
             <ScrollView style={styles.container}>
                 <View style={styles.card}>
-                    <Text style={styles.calorieNumber}>{2000}</Text>
+                    <Text style={styles.calorieNumber}>{dailyInfo?.totalCalories || 0}</Text>
                     <Text style={styles.calorieLabel}>Calories</Text>
                 </View>
 
                 <View style={styles.card}>
                     <View style={styles.macroGrid}>
                         <View style={styles.macroSection}>
-                            <Text style={[styles.macroNumber, styles.proteinColor]}>{250}g</Text>
+                            <Text style={[styles.macroNumber, styles.proteinColor]}>
+                                {dailyInfo?.totalProtein || 0}g
+                            </Text>
                             <Text style={styles.macroLabel}>Proteins</Text>
                         </View>
                         <View style={styles.macroSection}>
-                            <Text style={[styles.macroNumber, styles.carbColor]}>{250}g</Text>
+                            <Text style={[styles.macroNumber, styles.carbColor]}>
+                                {dailyInfo?.totalCarbs || 0}g
+                            </Text>
                             <Text style={styles.macroLabel}>Carbs</Text>
                         </View>
                         <View style={styles.macroSection}>
-                            <Text style={[styles.macroNumber, styles.fatColor]}>{250}g</Text>
+                            <Text style={[styles.macroNumber, styles.fatColor]}>
+                                {dailyInfo?.totalFat || 0}g
+                            </Text>
                             <Text style={styles.macroLabel}>Fats</Text>
                         </View>
                     </View>
@@ -40,17 +107,35 @@ const TodayScreen = ({navigation}: { navigation: any }) => {
                 <View style={[styles.card, styles.foodsCard]}>
                     <View>
                         <Text style={styles.foodsTitle}>Food Consumed</Text>
-                        {foods.map((food) => (
-                            <View key={food.id} style={styles.foodItem}>
-                                <View style={styles.foodItemDetails}>
-                                    <Text style={styles.foodName}>{food.name}</Text>
-                                    <Text style={styles.foodMacros}>
-                                        P: {food.protein}g | C: {food.carbs}g | F: {food.fat}g
-                                    </Text>
+                        {dailyInfo?.entries && dailyInfo.entries.length > 0 ? (
+                            dailyInfo.entries.map((food) => (
+                                <View key={food.id} style={styles.foodItem}>
+                                    <View style={styles.foodItemDetails}>
+                                        <Text style={styles.foodName}>{food.foodName}</Text>
+                                        <Text style={styles.foodMacros}>
+                                            P: {food.protein}g | C: {food.carbs}g | F: {food.fat}g
+                                        </Text>
+                                        <Text style={styles.foodQuantity}>Quantity: {food.quantity}</Text>
+                                    </View>
+                                    <View style={styles.foodItemActions}>
+                                        <Text style={styles.foodCalories}>{food.calories} kcal</Text>
+                                        <TouchableOpacity 
+                                            style={styles.removeButton}
+                                            onPress={() => handleRemoveFoodEntry(food.id)}
+                                        >
+                                            <Text style={styles.removeButtonText}>Remove</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                                <Text style={styles.foodCalories}>{food.calories} kcal</Text>
+                            ))
+                        ) : (
+                            <View style={styles.noFoodsContainer}>
+                                <Text style={styles.noFoodsText}>No food entries for today</Text>
+                                <Text style={styles.noFoodsSubtext}>
+                                    Start scanning food to track your nutrition!
+                                </Text>
                             </View>
-                        ))}
+                        )}
                     </View>
                 </View>
             </ScrollView>
@@ -132,38 +217,78 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '600',
         textAlign: 'center',
+        marginBottom: 16,
+    },
+    noFoodsContainer: {
+        alignItems: 'center',
+        paddingVertical: 32,
     },
     noFoodsText: {
         fontSize: 16,
         color: '#888',
         textAlign: 'center',
+        marginBottom: 8,
+    },
+    noFoodsSubtext: {
+        fontSize: 14,
+        color: '#AAA',
+        textAlign: 'center',
+    },
+    loadingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#6B7280',
     },
     foodItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         paddingVertical: 14,
         borderBottomWidth: 1,
         borderBottomColor: '#EEE',
     },
     foodItemDetails: {
         flex: 1,
-        marginRight: 10,
+        marginRight: 12,
+    },
+    foodItemActions: {
+        alignItems: 'flex-end',
     },
     foodName: {
         fontSize: 16,
-        fontWeight: '500',
+        fontWeight: '600',
         color: '#333',
+        marginBottom: 4,
     },
     foodMacros: {
-        fontSize: 13,
-        color: '#777',
-        marginTop: 2,
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 2,
+    },
+    foodQuantity: {
+        fontSize: 12,
+        color: '#888',
     },
     foodCalories: {
         fontSize: 16,
+        fontWeight: 'bold',
+        color: '#50ae2b',
+        marginBottom: 8,
+    },
+    removeButton: {
+        backgroundColor: '#EF4444',
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 6,
+    },
+    removeButtonText: {
+        color: '#FFFFFF',
+        fontSize: 12,
         fontWeight: '600',
-        color: '#4F46E5',
     },
     bottomBarContainer: {
         position: 'absolute',

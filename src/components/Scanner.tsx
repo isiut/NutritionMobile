@@ -33,7 +33,7 @@ export function Scanner({navigation}: { navigation: any }) {
             barcodeTypes: VALID_BARCODE_TYPES,
         }} onBarcodeScanned={(scanned) => {
             console.log("Scanned", scanned)
-            navigation.navigate("ScannedFood", {})
+            navigation.navigate("ScannedFood", { barcode: scanned.data })
         }}>
         </CameraView>
     );

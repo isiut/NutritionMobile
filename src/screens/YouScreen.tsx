@@ -1,16 +1,40 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text, Animated, Alert} from 'react-native';
 import NavigationBar from "../navigation/NavigationBar";
+import { useAuth } from '../contexts/AuthContext';
 import ScrollView = Animated.ScrollView;
 
 const YouScreen = ({navigation}: { navigation: any }) => {
+    const { user, logout } = useAuth();
+
+    const handleLogout = () => {
+        Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                { 
+                    text: 'Logout', 
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            await logout();
+                        } catch (error) {
+                            Alert.alert('Error', 'Failed to logout. Please try again.');
+                        }
+                    }
+                },
+            ]
+        );
+    };
+
     return (
         <>
             <ScrollView style={styles.container}>
                 <View style={styles.card}>
                     <View style={styles.userInfo}>
-                        <Text style={styles.userName}>{"Illia Siutkin"}</Text>
-                        <Text style={styles.userEmail}>{"illiasiutkin07@gmail.com"}</Text>
+                        <Text style={styles.userName}>{user?.name || 'User'}</Text>
+                        <Text style={styles.userEmail}>{user?.email || 'No email'}</Text>
                     </View>
                     <View style={styles.preferencesBox}>
                         <Text>Preferences: Vegetarian, Kosher</Text>
@@ -41,7 +65,7 @@ const YouScreen = ({navigation}: { navigation: any }) => {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.logoutButton} onPress={() => console.log('Logout pressed')}>
+                        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                             <Text style={styles.logoutButtonText}>Logout</Text>
                         </TouchableOpacity>
                     </View>
