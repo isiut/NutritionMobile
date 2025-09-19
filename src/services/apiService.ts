@@ -1,5 +1,7 @@
 // API Service for connecting to the Nutrition API
-const API_BASE_URL = 'http://localhost:8080/api/v1'; // Update this to your actual API URL
+import config from '../config/config';
+
+const API_BASE_URL = config.API_BASE_URL;
 
 export interface User {
   id: string;

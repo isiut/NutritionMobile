@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiService, { User, LoginRequest, RegisterRequest } from '../services/apiService';
+import config from '../config/config';
 
 interface AuthContextType {
   user: User | null;
@@ -35,8 +36,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const checkAuthState = async () => {
     try {
-      const token = await AsyncStorage.getItem('authToken');
-      const userData = await AsyncStorage.getItem('userData');
+      const token = await AsyncStorage.getItem(config.AUTH_TOKEN_KEY);
+      const userData = await AsyncStorage.getItem(config.USER_DATA_KEY);
       
       if (token && userData) {
         apiService.setAuthToken(token);
@@ -54,8 +55,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
       const result = await apiService.login(credentials);
       
-      await AsyncStorage.setItem('authToken', result.token);
-      await AsyncStorage.setItem('userData', JSON.stringify(result.user));
+      await AsyncStorage.setItem(config.AUTH_TOKEN_KEY, result.token);
+      await AsyncStorage.setItem(config.USER_DATA_KEY, JSON.stringify(result.user));
       
       setUser(result.user);
     } catch (error) {
@@ -87,16 +88,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
       await apiService.logout();
       
-      await AsyncStorage.removeItem('authToken');
-      await AsyncStorage.removeItem('userData');
+      await AsyncStorage.removeItem(config.AUTH_TOKEN_KEY);
+      await AsyncStorage.removeItem(config.USER_DATA_KEY);
       
       apiService.clearAuth();
       setUser(null);
     } catch (error) {
       console.error('Logout error:', error);
       // Even if API call fails, clear local state
-      await AsyncStorage.removeItem('authToken');
-      await AsyncStorage.removeItem('userData');
+      await AsyncStorage.removeItem(config.AUTH_TOKEN_KEY);
+      await AsyncStorage.removeItem(config.USER_DATA_KEY);
       apiService.clearAuth();
       setUser(null);
     } finally {
